@@ -23,12 +23,4 @@ const successResponseCreator = (statusCode, message, data) => {
     };
 };
 
-const errorResponseCreator = (statusCode, error, message) => {
-    return {
-        statusCode: statusCode,
-        error: error,
-        message: message,
-    };
-};
-
-module.exports = {responseSchema, successResponseCreator, errorResponseCreator};
+module.exports = {responseSchema, successResponseCreator};

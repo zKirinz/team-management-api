@@ -2,11 +2,12 @@
     "name": "team-management-api-fastify",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "server.js",
     "scripts": {
-        "start": "node index.js",
-        "start:local": "env-cmd -f .env.local fastify start index.js --watch",
-        "start:dev": "env-cmd -f .env.development fastify start index.js --watch",
+        "start": "node server.js",
+        "start:local": "env-cmd -f .env.local nodemon server.js",
+        "start:dev": "env-cmd -f .env.development nodemon server.js",
+        "test": "env-cmd -f .env.test jest --config ./jest.config.js",
         "format": "prettier --config .prettierrc --write \"**/*.+(js|jsx|json|css|md)\""
     },
     "keywords": [],
@@ -15,16 +16,16 @@
     "dependencies": {
         "env-cmd": "^10.1.0",
         "fastify": "^3.15.0",
-        "fastify-bcrypt": "^0.1.0",
-        "fastify-env": "^2.1.0",
-        "fastify-jwt": "^2.4.0",
-        "fastify-log": "^1.2.1",
         "fastify-plugin": "^3.0.0",
         "fastify-sensible": "^3.1.1",
+        "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.12.7"
     },
     "devDependencies": {
+        "bcrypt": "^5.0.1",
+        "jest": "^26.6.3",
         "nodemon": "^2.0.7",
-        "prettier": "^2.2.1"
+        "prettier": "^2.2.1",
+        "supertest": "^6.1.3"
     }
 }

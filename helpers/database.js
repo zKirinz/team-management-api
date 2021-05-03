@@ -1,12 +1,29 @@
 const mongoose = require("mongoose");
 
-const databaseConnector = async (fastify) => {
-    await mongoose.connect(fastify.config.MONGODB_URL + "/" + fastify.config.MONGODB_NAME, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-    });
-    console.log("Connect to database successfully");
+const connectMongodb = async (postfix = "") => {
+    const db = await mongoose.connect(
+        process.env.MONGODB_URL + "/" + process.env.MONGODB_NAME + postfix,
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useFindAndModify: false,
+        }
+    );
+    return db.connection;
 };
 
-module.exports = databaseConnector;
+const fastifyMongoose = async (fastify) => {
+    if (process.env.NODE_ENV === "test") {
+        return;
+    }
+
+    try {
+        const db = await connectMongodb();
+        console.log("Connect to database successfully");
+        fastify.decorate("db", db);
+    } catch (error) {
+        console.log("Mongodb starting error: ", error);
+    }
+};
+
+module.exports = {fastifyMongoose, connectMongodb};

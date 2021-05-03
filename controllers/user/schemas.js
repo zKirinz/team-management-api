@@ -7,12 +7,16 @@ const register = {
         properties: {
             name: {
                 type: "string",
+                minLength: 3,
+                maxLength: 30,
             },
             email: {
                 type: "string",
             },
             password: {
                 type: "string",
+                minLength: 6,
+                maxLength: 30,
             },
         },
         additionalProperties: false,
@@ -70,6 +74,8 @@ const updateProfile = {
         properties: {
             name: {
                 type: "string",
+                minLength: 3,
+                maxLength: 30,
             },
             description: {
                 type: "string",
@@ -105,6 +111,8 @@ const changePassword = {
             },
             newPassword: {
                 type: "string",
+                minLength: 6,
+                maxLength: 30,
             },
         },
         additionalProperties: false,
