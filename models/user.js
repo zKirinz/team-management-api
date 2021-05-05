@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
     password: {type: String, required: true},
     description: {type: String},
     avatarUrl: {type: String},
+    teams: [{type: mongoose.Schema.Types.ObjectId, ref: "Team"}],
 });
 
 module.exports = mongoose.model("User", UserSchema);

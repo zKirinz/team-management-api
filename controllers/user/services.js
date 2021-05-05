@@ -14,8 +14,8 @@ class UserService {
             throw this.fastify.httpErrors.badRequest("Email is invalid");
         }
 
-        const existedUser = await User.findOne({email});
-        if (existedUser) {
+        const existsUser = await User.findOne({email});
+        if (existsUser) {
             throw this.fastify.httpErrors.badRequest("Email is already exists");
         }
 
@@ -44,17 +44,17 @@ class UserService {
             throw this.fastify.httpErrors.badRequest("Email is invalid");
         }
 
-        const existedUser = await User.findOne({email});
-        if (!existedUser) {
+        const existsUser = await User.findOne({email});
+        if (!existsUser) {
             throw this.fastify.httpErrors.notFound("Email is not exist");
         }
 
-        const isMatchedPassword = await this.fastify.bcrypt.compare(password, existedUser.password);
+        const isMatchedPassword = await this.fastify.bcrypt.compare(password, existsUser.password);
         if (!isMatchedPassword) {
             throw this.fastify.httpErrors.badRequest("Password is incorrect");
         }
 
-        const token = await this.fastify.jwt.sign({name: existedUser.name, email});
+        const token = await this.fastify.jwt.sign({name: existsUser.name, email});
         if (!token) {
             throw this.fastify.httpErrors.internalServerError("Something went wrong");
         }

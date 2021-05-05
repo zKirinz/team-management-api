@@ -49,4 +49,15 @@ describe("Update Profile user /me", () => {
 
         expect(res.status).toEqual(400);
     });
+
+    it("should return 400 UPDATE PROFILE USER fail: body.description should NOT be longer than 300 characters", async () => {
+        const res = await exec(
+            user1Token,
+            "Updated User 1",
+            "Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1 Updated Content 1",
+            "updatedtest1.com"
+        );
+
+        expect(res.status).toEqual(400);
+    });
 });

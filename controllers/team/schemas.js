@@ -1,21 +1,23 @@
 const {responseSchema} = require("../../helpers/response");
 
-const register = {
+const create = {
+    headers: {
+        type: "object",
+        required: ["authorization"],
+        properties: {
+            authorization: {
+                type: "string",
+            },
+        },
+        additionalProperties: false,
+    },
     body: {
         type: "object",
-        required: ["name", "email", "password"],
+        required: ["name"],
         properties: {
             name: {
                 type: "string",
                 minLength: 3,
-                maxLength: 30,
-            },
-            email: {
-                type: "string",
-            },
-            password: {
-                type: "string",
-                minLength: 6,
                 maxLength: 30,
             },
         },
@@ -26,22 +28,7 @@ const register = {
     },
 };
 
-const login = {
-    body: {
-        type: "object",
-        require: ["email", "password"],
-        properties: {
-            email: {type: "string"},
-            password: {type: "string"},
-        },
-        additionalProperties: false,
-    },
-    response: {
-        200: responseSchema,
-    },
-};
-
-const getProfile = {
+const get = {
     headers: {
         type: "object",
         required: ["authorization"],
@@ -57,7 +44,7 @@ const getProfile = {
     },
 };
 
-const updateProfile = {
+const update = {
     headers: {
         type: "object",
         required: ["authorization"],
@@ -92,7 +79,7 @@ const updateProfile = {
     },
 };
 
-const changePassword = {
+const remove = {
     headers: {
         type: "object",
         required: ["authorization"],
@@ -105,14 +92,11 @@ const changePassword = {
     },
     body: {
         type: "object",
-        required: ["password", "newPassword"],
+        required: ["name"],
         properties: {
-            password: {
+            name: {
                 type: "string",
-            },
-            newPassword: {
-                type: "string",
-                minLength: 6,
+                minLength: 3,
                 maxLength: 30,
             },
         },
@@ -124,9 +108,8 @@ const changePassword = {
 };
 
 module.exports = {
-    register,
-    login,
-    getProfile,
-    updateProfile,
-    changePassword,
+    create,
+    get,
+    update,
+    remove,
 };
