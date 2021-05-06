@@ -7,10 +7,11 @@ const getUserToken = (payload) => {
 
 const verifyUserToken = async (token, httpErrors) => {
     try {
-        return jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const payload = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+        return payload;
     } catch (error) {
         const message =
-            error.name === "JsonWebTokenError" ? "Credential is invalid" : error.message;
+            error.name === "TokenExpiredError" ? error.message : "Credential is invalid";
 
         throw httpErrors.unauthorized(message);
     }
@@ -34,7 +35,7 @@ const fastifyJWT = async (fastify) => {
             throw fastify.httpErrors.unauthorized("Credential is invalid");
         }
         const user = await User.findOne({email: payload.email});
-        if (!user) throw httpErrors.internalServerError("Something went wrong");
+        if (!user) throw httpErrors.internalServerError("Credential is invalid");
 
         request.user = user;
     });

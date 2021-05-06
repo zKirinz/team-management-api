@@ -1,5 +1,7 @@
 const {responseSchema} = require("../../helpers/response");
 
+const MAX_TEAMS = 10;
+
 const create = {
     headers: {
         type: "object",
@@ -13,12 +15,15 @@ const create = {
     },
     body: {
         type: "object",
-        required: ["name"],
+        required: ["name", "isPublished"],
         properties: {
             name: {
                 type: "string",
                 minLength: 3,
                 maxLength: 30,
+            },
+            isPublished: {
+                type: "boolean",
             },
         },
         additionalProperties: false,
@@ -28,7 +33,67 @@ const create = {
     },
 };
 
+const getAll = {
+    query: {
+        type: "object",
+        properties: {
+            limit: {
+                type: "number",
+                minimum: 3,
+                maximum: MAX_TEAMS,
+            },
+            offset: {
+                type: "number",
+                minimum: 0,
+            },
+            name: {
+                type: "string",
+                maxLength: 30,
+            },
+            description: {
+                type: "string",
+                maxLength: 300,
+            },
+        },
+    },
+    headers: {
+        type: "object",
+        required: ["authorization"],
+        properties: {
+            authorization: {
+                type: "string",
+            },
+        },
+        additionalProperties: false,
+    },
+    response: {
+        200: responseSchema,
+    },
+};
+
 const get = {
+    query: {
+        type: "object",
+        properties: {
+            limit: {
+                type: "number",
+                minimum: 3,
+                maximum: MAX_TEAMS,
+            },
+            offset: {
+                type: "number",
+                minimum: 0,
+            },
+            name: {
+                type: "string",
+                maxLength: 30,
+            },
+            description: {
+                type: "string",
+                maxLength: 300,
+            },
+        },
+    },
     headers: {
         type: "object",
         required: ["authorization"],
@@ -57,7 +122,7 @@ const update = {
     },
     body: {
         type: "object",
-        required: ["name", "description", "avatarUrl"],
+        required: ["name", "description", "avatarUrl", "isPublished"],
         properties: {
             name: {
                 type: "string",
@@ -70,6 +135,9 @@ const update = {
             },
             avatarUrl: {
                 type: "string",
+            },
+            isPublished: {
+                type: "boolean",
             },
         },
         additionalProperties: false,
@@ -110,6 +178,8 @@ const remove = {
 module.exports = {
     create,
     get,
+    getAll,
     update,
     remove,
+    MAX_TEAMS,
 };

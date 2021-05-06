@@ -1,7 +1,7 @@
 const {
     create: createSchema,
     get: getSchema,
-    getByName: getByNameSchema,
+    getAll: getAllSchema,
     update: updateSchema,
     remove: removeSchema,
 } = require("./schemas");
@@ -20,6 +20,7 @@ module.exports = async (fastify) => {
             request.teams = teams;
         });
         fastify.post("/", {schema: createSchema}, createTeamHandler);
+        fastify.get("/all", {schema: getAllSchema}, getAllTeamsHandler);
         fastify.get("/", {schema: getSchema}, getTeamsHandler);
         fastify.put("/", {schema: updateSchema}, updateTeamHandler);
         fastify.delete("/", {schema: removeSchema}, removeTeamHandler);
@@ -28,19 +29,26 @@ module.exports = async (fastify) => {
 
 async function createTeamHandler(request, reply) {
     const {user} = request;
-    const {name} = request.body;
-    return this.teamService.create_team(user, name);
+    const {teams} = request;
+    const {name, isPublished} = request.body;
+    return this.teamService.create_team(user, teams, name, isPublished);
+}
+
+async function getAllTeamsHandler(request, reply) {
+    const {limit, offset, name, description} = request.query;
+    return this.teamService.getAll_team(limit, offset, name, description);
 }
 
 async function getTeamsHandler(request, reply) {
     const {teams} = request;
-    return this.teamService.get_team(teams);
+    const {limit, offset, name, description} = request.query;
+    return this.teamService.get_team(teams, limit, offset, name, description);
 }
 
 async function updateTeamHandler(request, reply) {
     const {teams} = request;
-    const {name, description, avatarUrl} = request.body;
-    return this.teamService.update_team(teams, name, description, avatarUrl);
+    const {name, description, avatarUrl, isPublished} = request.body;
+    return this.teamService.update_team(teams, name, description, avatarUrl, isPublished);
 }
 
 async function removeTeamHandler(request, reply) {
