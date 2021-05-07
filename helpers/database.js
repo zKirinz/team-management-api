@@ -6,7 +6,7 @@ const connectMongodb = async (postfix = "") => {
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useFindAndModify: false,
+            useCreateIndex: true,
         }
     );
     return db.connection;

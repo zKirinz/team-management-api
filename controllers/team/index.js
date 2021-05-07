@@ -31,29 +31,40 @@ async function createTeamHandler(request, reply) {
     const {user} = request;
     const {teams} = request;
     const {name, isPublished} = request.body;
-    return this.teamService.create_team(user, teams, name, isPublished);
+    reply.code(201);
+    return this.teamService.create_team(user, teams, name.trim(), isPublished);
 }
 
 async function getAllTeamsHandler(request, reply) {
-    const {limit, offset, name, description} = request.query;
-    return this.teamService.getAll_team(limit, offset, name, description);
+    const {limit, offset} = request.query;
+    let {search} = request.query;
+    search = search ? search.trim() : search;
+    return this.teamService.getAll_team(limit, offset, search);
 }
 
 async function getTeamsHandler(request, reply) {
     const {teams} = request;
-    const {limit, offset, name, description} = request.query;
-    return this.teamService.get_team(teams, limit, offset, name, description);
+    const {limit, offset} = request.query;
+    let {search} = request.query;
+    search = search ? search.trim() : search;
+    return this.teamService.get_team(teams, limit, offset, search);
 }
 
 async function updateTeamHandler(request, reply) {
     const {teams} = request;
     const {name, description, avatarUrl, isPublished} = request.body;
-    return this.teamService.update_team(teams, name, description, avatarUrl, isPublished);
+    return this.teamService.update_team(
+        teams,
+        name.trim(),
+        description.trim(),
+        avatarUrl.trim(),
+        isPublished
+    );
 }
 
 async function removeTeamHandler(request, reply) {
     const {user} = request;
     const {teams} = request;
     const {name} = request.body;
-    return this.teamService.remove_team(user, teams, name);
+    return this.teamService.remove_team(user, teams, name.trim());
 }

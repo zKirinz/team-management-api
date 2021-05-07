@@ -1,6 +1,6 @@
 const {responseSchema} = require("../../helpers/response");
 
-const MAX_TEAMS = 10;
+const MAX_TEAMS = 6;
 
 const create = {
     headers: {
@@ -46,11 +46,7 @@ const getAll = {
                 type: "number",
                 minimum: 0,
             },
-            name: {
-                type: "string",
-                maxLength: 30,
-            },
-            description: {
+            search: {
                 type: "string",
                 maxLength: 300,
             },
@@ -84,11 +80,7 @@ const get = {
                 type: "number",
                 minimum: 0,
             },
-            name: {
-                type: "string",
-                maxLength: 30,
-            },
-            description: {
+            search: {
                 type: "string",
                 maxLength: 300,
             },

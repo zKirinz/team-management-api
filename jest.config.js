@@ -1,4 +1,4 @@
 module.exports = {
-    testRegex: ["user/.*.test.js"],
+    testRegex: ["team/.*.test.js"],
     testEnvironment: "node",
 };

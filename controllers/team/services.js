@@ -1,7 +1,6 @@
 const {successResponseCreator} = require("../../helpers/response");
 
 const Team = require("../../models/team");
-const User = require("../../models/user");
 
 const {MAX_TEAMS} = require("./schemas");
 
@@ -11,7 +10,7 @@ class TeamService {
     }
 
     async create_team(user, teams, name, isPublished) {
-        if (teams.length > MAX_TEAMS) {
+        if (teams.length >= MAX_TEAMS) {
             throw this.fastify.httpErrors.badRequest(
                 `A User cannot have more than ${MAX_TEAMS} teams`
             );
@@ -45,50 +44,58 @@ class TeamService {
         });
     }
 
-    async getAll_team(limit, offset, name, description) {
-        let filteredTeams = await Team.find({isPublished: true});
+    async getAll_team(limit, offset, search) {
+        let filteredTeams;
+        if (search) {
+            const regex = new RegExp(search);
+            if (!limit || !offset) {
+                filteredTeams = await Team.find({
+                    $and: [{$or: [{name: regex}, {description: regex}]}],
+                });
+            } else {
+                filteredTeams = await Team.find({
+                    $and: [{$or: [{name: regex}, {description: regex}]}],
+                })
+                    .skip(offset * limit)
+                    .limit(limit);
+            }
+        } else {
+            if (!limit || !offset) {
+                filteredTeams = await Team.find();
+            } else {
+                filteredTeams = await Team.find()
+                    .skip(offset * limit)
+                    .limit(limit);
+            }
+        }
 
         if (filteredTeams.length === 0) {
-            return successResponseCreator(201, "Get teams successfully", []);
+            return successResponseCreator(200, "Get teams successfully", []);
         }
 
-        if (name) {
-            filteredTeams = filteredTeams.filter((team) => team.name.includes(name));
-        }
-
-        if (description) {
-            filteredTeams = filteredTeams.filter((team) => team.description.includes(description));
-        }
-
-        if (offset * limit + 1 > filteredTeams.length) {
-            throw this.fastify.httpErrors.badRequest("Offset is not exists");
-        }
-        const paginationTeams = filteredTeams.slice(offset * limit, (offset + 1) * limit);
-
-        return successResponseCreator(200, "Get teams successfully", paginationTeams);
+        return successResponseCreator(200, "Get teams successfully", filteredTeams);
     }
 
-    async get_team(teams, limit, offset, name, description) {
+    async get_team(teams, limit, offset, search) {
         let filteredTeams = teams;
+        if (search) {
+            filteredTeams = filteredTeams.filter(
+                (team) => team.name.includes(search) || team.description.includes(search)
+            );
+        }
 
         if (filteredTeams.length === 0) {
-            return successResponseCreator(201, "Get teams successfully", []);
+            return successResponseCreator(200, "Get teams successfully", []);
         }
 
-        if (name) {
-            filteredTeams = filteredTeams.filter((team) => team.name.includes(name));
+        if (limit && offset) {
+            if (offset * limit + 1 > filteredTeams.length) {
+                throw this.fastify.httpErrors.badRequest("Offset is not exists");
+            }
+            filteredTeams = filteredTeams.slice(offset * limit, (offset + 1) * limit);
         }
 
-        if (description) {
-            filteredTeams = filteredTeams.filter((team) => team.description.includes(description));
-        }
-
-        if (offset * limit + 1 > filteredTeams.length) {
-            throw this.fastify.httpErrors.badRequest("Offset is not exists");
-        }
-        const paginationTeams = filteredTeams.slice(offset * limit, (offset + 1) * limit);
-
-        return successResponseCreator(200, "Get teams successfully", paginationTeams);
+        return successResponseCreator(200, "Get teams successfully", filteredTeams);
     }
 
     async update_team(teams, name, description, avatarUrl, isPublished) {
