@@ -19,11 +19,10 @@ class UserService {
             throw this.fastify.httpErrors.badRequest("Email is already exists");
         }
 
-        const hashedPassword = await this.fastify.bcrypt.hash(password);
         const createdUser = await User.create({
             name,
             email,
-            password: hashedPassword,
+            password,
             description: "",
             avatarUrl: "",
         });
@@ -100,8 +99,7 @@ class UserService {
             throw this.fastify.httpErrors.badRequest("Password is incorrect");
         }
 
-        const hashedPassword = await this.fastify.bcrypt.hash(newPassword);
-        user.password = hashedPassword;
+        user.password = newPassword;
         const updatedUser = await user.save();
         if (updatedUser !== user) {
             throw this.fastify.httpErrors.internalServerError("Something went wrong");
