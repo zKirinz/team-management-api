@@ -40,4 +40,16 @@ describe("Create a team /", () => {
 
         expect(res.status).toEqual(400);
     });
+
+    it("should return 400 CREATE A TEAM fail: body.name should NOT be shorter than 3 characters", async () => {
+        const res = await exec(user1Token, "FE", true);
+
+        expect(res.status).toEqual(400);
+    });
+
+    it("should return 400 CREATE A TEAM fail: body.name should NOT be longer than 30 characters", async () => {
+        const res = await exec(user1Token, "Data Structures and Algorithms ", true);
+
+        expect(res.status).toEqual(400);
+    });
 });

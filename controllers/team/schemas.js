@@ -1,6 +1,7 @@
 const {responseSchema} = require("../../helpers/response");
 
 const MAX_TEAMS = 6;
+const MIN_TEAMS = 3;
 
 const create = {
     headers: {
@@ -39,7 +40,7 @@ const getAll = {
         properties: {
             limit: {
                 type: "number",
-                minimum: 3,
+                minimum: MIN_TEAMS,
                 maximum: MAX_TEAMS,
             },
             offset: {
@@ -73,7 +74,7 @@ const get = {
         properties: {
             limit: {
                 type: "number",
-                minimum: 3,
+                minimum: MIN_TEAMS,
                 maximum: MAX_TEAMS,
             },
             offset: {
@@ -174,4 +175,5 @@ module.exports = {
     update,
     remove,
     MAX_TEAMS,
+    MIN_TEAMS,
 };

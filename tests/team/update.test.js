@@ -48,4 +48,40 @@ describe("Update a team /", () => {
 
         expect(res.status).toEqual(400);
     });
+
+    it("should return 400 UPDATE A TEAM fail: body.name should NOT be shorter than 3 characters", async () => {
+        const res = await exec(
+            user1Token,
+            "FE",
+            "A group for learning ReactJS",
+            "pornhub.com",
+            true
+        );
+
+        expect(res.status).toEqual(400);
+    });
+
+    it("should return 400 UPDATE A TEAM fail: body.name should NOT be longer than 30 characters", async () => {
+        const res = await exec(
+            user1Token,
+            "Data Structures and Algorithms ",
+            "A group for learning ReactJS",
+            "pornhub.com",
+            true
+        );
+
+        expect(res.status).toEqual(400);
+    });
+
+    it("should return 400 UPDATE A TEAM fail: body.description should NOT be longer than 300 characters", async () => {
+        const res = await exec(
+            user1Token,
+            "Front-end",
+            "A group for learning ReactJS. A group for learning ReactJS. A group for learning ReactJS. A group for learning ReactJS. A group for learning ReactJS. A group for learning ReactJS. A group for learning ReactJS. A group for learning ReactJS. A group for learning ReactJS. A group for learning ReactJS. A group for learning ReactJS",
+            "pornhub.com",
+            true
+        );
+
+        expect(res.status).toEqual(400);
+    });
 });
