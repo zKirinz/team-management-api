@@ -8,12 +8,14 @@
         "start:local": "env-cmd -f .env.local nodemon server.js",
         "start:dev": "env-cmd -f .env.development nodemon server.js",
         "test": "env-cmd -f .env.test jest --config ./jest.config.js",
-        "format": "prettier --config .prettierrc --write \"**/*.+(js|jsx|json|css|md)\""
+        "format": "prettier --config .prettierrc --write \"**/*.+(js|jsx|json|css|md)\"",
+        "prepare": "husky install"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "bcrypt": "^5.0.1",
         "env-cmd": "^10.1.0",
         "fastify": "^3.15.0",
         "fastify-plugin": "^3.0.0",
@@ -21,9 +23,27 @@
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.12.7"
     },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged && npx mrm lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.(ts|tsx|js|jsx)": [
+            "eslint --fix",
+            "prettier --write"
+        ]
+    },
     "devDependencies": {
-        "bcrypt": "^5.0.1",
+        "@babel/core": "^7.14.0",
+        "@babel/eslint-parser": "^7.13.14",
+        "@babel/preset-env": "^7.14.1",
+        "eslint": "^7.26.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^3.4.0",
+        "husky": "^6.0.0",
         "jest": "^26.6.3",
+        "lint-staged": "^11.0.0",
         "nodemon": "^2.0.7",
         "prettier": "^2.2.1",
         "supertest": "^6.1.3"
