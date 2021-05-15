@@ -1,5 +1,8 @@
 const {responseSchema} = require("../../helpers/response");
 
+const MAX_USERS = 20;
+const MIN_USERS = 3;
+
 const register = {
     body: {
         type: "object",
@@ -42,6 +45,40 @@ const login = {
 };
 
 const getProfile = {
+    headers: {
+        type: "object",
+        required: ["authorization"],
+        properties: {
+            authorization: {
+                type: "string",
+            },
+        },
+        additionalProperties: false,
+    },
+    response: {
+        200: responseSchema,
+    },
+};
+
+const get = {
+    query: {
+        type: "object",
+        properties: {
+            limit: {
+                type: "number",
+                minimum: MIN_USERS,
+                maximum: MAX_USERS,
+            },
+            offset: {
+                type: "number",
+                minimum: 0,
+            },
+            search: {
+                type: "string",
+                maxLength: 300,
+            },
+        },
+    },
     headers: {
         type: "object",
         required: ["authorization"],
@@ -127,6 +164,9 @@ module.exports = {
     register,
     login,
     getProfile,
+    get,
     updateProfile,
     changePassword,
+    MIN_USERS,
+    MAX_USERS,
 };

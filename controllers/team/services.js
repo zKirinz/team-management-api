@@ -1,8 +1,11 @@
 const {successResponseCreator} = require("../../helpers/response");
 
 const Team = require("../../models/team");
+const User = require("../../models/user");
 
 const {MAX_TEAMS} = require("./schemas");
+
+const objectIdReg = /^[0-9a-fA-F]{24}$/;
 
 class TeamService {
     constructor(fastify) {
@@ -24,7 +27,7 @@ class TeamService {
         const createdTeam = await Team.create({
             name,
             isPublished,
-            creator: user._id,
+            creatorId: user._id,
         });
         if (!createdTeam) {
             throw this.fastify.httpErrors.internalServerError("Something went wrong");
@@ -134,6 +137,45 @@ class TeamService {
         }
 
         return successResponseCreator(200, "Delete a team successfully", removedTeam);
+    }
+
+    async addUser_team(user, teams, name, id) {
+        if (!objectIdReg.test(id)) {
+            throw this.fastify.httpErrors.badRequest("UserId is invalid");
+        }
+
+        if (user._id.toString() === id) {
+            throw this.fastify.httpErrors.badRequest("User is the admin of the team");
+        }
+
+        const teamIndex = teams.findIndex((team) => team.name === name);
+        if (teamIndex === -1) {
+            throw this.fastify.httpErrors.badRequest("Team is not exists");
+        }
+
+        const existsUser = await User.findById(id);
+        if (!existsUser) {
+            throw this.fastify.httpErrors.badRequest("User is not exists");
+        }
+
+        const team = teams[teamIndex];
+        if (team.users.find((userId) => userId.toString() === id)) {
+            throw this.fastify.httpErrors.badRequest("User is already in the team");
+        }
+
+        team.users.push(id);
+        const savedTeam = await team.save();
+        if (!savedTeam) {
+            throw this.fastify.httpErrors.internalServerError("Something went wrong");
+        }
+
+        existsUser.teams.push(team._id);
+        const savedUser = await existsUser.save();
+        if (!savedUser) {
+            throw this.fastify.httpErrors.internalServerError("Something went wrong");
+        }
+
+        return successResponseCreator(200, "Add a user successfully");
     }
 }
 

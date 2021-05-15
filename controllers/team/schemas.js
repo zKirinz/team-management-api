@@ -168,12 +168,44 @@ const remove = {
     },
 };
 
+const addUser = {
+    headers: {
+        type: "object",
+        required: ["authorization"],
+        properties: {
+            authorization: {
+                type: "string",
+            },
+        },
+        additionalProperties: false,
+    },
+    body: {
+        type: "object",
+        required: ["name", "id"],
+        properties: {
+            name: {
+                type: "string",
+                minLength: 3,
+                maxLength: 30,
+            },
+            id: {
+                type: "string",
+            },
+        },
+        additionalProperties: false,
+    },
+    response: {
+        200: responseSchema,
+    },
+};
+
 module.exports = {
     create,
     get,
     getAll,
     update,
     remove,
+    addUser,
     MAX_TEAMS,
     MIN_TEAMS,
 };

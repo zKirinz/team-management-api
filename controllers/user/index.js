@@ -2,6 +2,7 @@ const {
     login: loginSchema,
     register: registerSchema,
     getProfile: getProfileSchema,
+    get: getSchema,
     updateProfile: updateProfileSchema,
     changePassword: changePasswordSchema,
 } = require("./schemas");
@@ -13,36 +14,43 @@ module.exports = async (fastify) => {
     fastify.register(async (fastify) => {
         fastify.addHook("onRequest", fastify.authOnRequest);
         fastify.get("/me", {schema: getProfileSchema}, getProfileHandler);
+        fastify.get("/", {schema: getSchema}, getHandler);
         fastify.post("/me", {schema: updateProfileSchema}, updateProfileHandler);
         fastify.post("/password", {schema: changePasswordSchema}, changePasswordHandler);
     });
 };
 
-async function registerHandler(req, reply) {
-    const {name, email, password} = req.body;
+async function registerHandler(request, reply) {
+    const {name, email, password} = request.body;
     reply.code(201);
     return this.userService.register_user(name, email, password);
 }
 
-async function loginHandler(req, reply) {
-    const {email, password} = req.body;
+async function loginHandler(request, reply) {
+    const {email, password} = request.body;
     return this.userService.login_user(email, password);
 }
 
-async function getProfileHandler(req, reply) {
-    const {user} = req;
+async function getProfileHandler(request, reply) {
+    const {user} = request;
     return this.userService.getProfile_user(user);
 }
 
-async function updateProfileHandler(req, reply) {
-    const {user} = req;
-    const {name, description, avatarUrl} = req.body;
+async function getHandler(request, reply) {
+    const {limit, offset} = request.query;
+    let {search} = request.query;
+    search = search ? search.trim() : search;
+    return this.userService.get_user(limit, offset, search);
+}
+
+async function updateProfileHandler(request, reply) {
+    const {user} = request;
+    const {name, description, avatarUrl} = request.body;
     return this.userService.updateProfile_user(user, name, description, avatarUrl);
 }
 
-async function changePasswordHandler(req, reply) {
-    const {user} = req;
-    const {password, newPassword} = req.body;
-    console.log(password, newPassword);
+async function changePasswordHandler(request, reply) {
+    const {user} = request;
+    const {password, newPassword} = request.body;
     return this.userService.changePassword_user(user, password, newPassword);
 }

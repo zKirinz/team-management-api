@@ -1,6 +1,7 @@
 const {successResponseCreator} = require("../../helpers/response");
 
 const User = require("../../models/user");
+const {MAX_USERS} = require("./schemas");
 
 const emailReg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
 
@@ -12,6 +13,13 @@ class UserService {
     async register_user(name, email, password) {
         if (!emailReg.test(email)) {
             throw this.fastify.httpErrors.badRequest("Email is invalid");
+        }
+
+        const usersNumber = await User.estimatedDocumentCount();
+        if (usersNumber >= MAX_USERS) {
+            throw this.fastify.httpErrors.badRequest(
+                `This app cannot have more than ${MAX_USERS} users`
+            );
         }
 
         const existsUser = await User.findOne({email});
@@ -68,6 +76,38 @@ class UserService {
             description,
             avatarUrl,
         });
+    }
+
+    async get_user(limit, offset, search) {
+        let filteredUsers;
+        if (search) {
+            const regex = new RegExp(search);
+            if (!limit || !offset) {
+                filteredUsers = await User.find({
+                    $and: [{$or: [{name: regex}, {description: regex}]}],
+                });
+            } else {
+                filteredUsers = await User.find({
+                    $and: [{$or: [{name: regex}, {description: regex}]}],
+                })
+                    .skip(offset * limit)
+                    .limit(limit);
+            }
+        } else {
+            if (!limit || !offset) {
+                filteredUsers = await User.find();
+            } else {
+                filteredUsers = await User.find()
+                    .skip(offset * limit)
+                    .limit(limit);
+            }
+        }
+
+        if (filteredUsers.length === 0) {
+            return successResponseCreator(200, "Get users successfully", []);
+        }
+
+        return successResponseCreator(200, "Get users successfully", filteredUsers);
     }
 
     async updateProfile_user(user, name, description, avatarUrl) {

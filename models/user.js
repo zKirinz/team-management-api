@@ -3,7 +3,7 @@ const {hashString} = require("../helpers/bcrypt");
 
 const UserSchema = new mongoose.Schema({
     email: {type: String, required: true, index: true},
-    name: {type: String, required: true},
+    name: {type: String, required: true, index: true},
     password: {type: String, required: true},
     description: {type: String, default: ""},
     avatarUrl: {type: String, default: ""},

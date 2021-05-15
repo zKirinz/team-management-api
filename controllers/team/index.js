@@ -4,6 +4,7 @@ const {
     getAll: getAllSchema,
     update: updateSchema,
     remove: removeSchema,
+    addUser: addUserSchema,
 } = require("./schemas");
 
 module.exports = async (fastify) => {
@@ -19,6 +20,7 @@ module.exports = async (fastify) => {
 
             request.teams = teams;
         });
+        fastify.post("/addUser", {schema: addUserSchema}, addUserHandler);
         fastify.post("/", {schema: createSchema}, createTeamHandler);
         fastify.get("/all", {schema: getAllSchema}, getAllTeamsHandler);
         fastify.get("/", {schema: getSchema}, getTeamsHandler);
@@ -67,4 +69,11 @@ async function removeTeamHandler(request, reply) {
     const {teams} = request;
     const {name} = request.body;
     return this.teamService.remove_team(user, teams, name.trim());
+}
+
+async function addUserHandler(request, reply) {
+    const {user} = request;
+    const {teams} = request;
+    const {name, id} = request.body;
+    return this.teamService.addUser_team(user, teams, name, id);
 }

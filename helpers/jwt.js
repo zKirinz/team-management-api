@@ -2,7 +2,13 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const getUserToken = (payload) => {
-    return jwt.sign(payload, process.env.JWT_SECRET_KEY);
+    const options = {
+        expiresIn: 60 * 60,
+        issuer: process.env.BACKEND_URL,
+        audience: process.env.BACKEND_URL,
+    };
+
+    return jwt.sign(payload, process.env.JWT_SECRET_KEY, options);
 };
 
 const verifyUserToken = async (token, httpErrors) => {
@@ -10,10 +16,8 @@ const verifyUserToken = async (token, httpErrors) => {
         const payload = await jwt.verify(token, process.env.JWT_SECRET_KEY);
         return payload;
     } catch (error) {
-        const message =
-            error.name === "TokenExpiredError" ? error.message : "Credential is invalid";
-
-        throw httpErrors.unauthorized(message);
+        console.log(error);
+        throw httpErrors.unauthorized("Credential is invalid");
     }
 };
 
