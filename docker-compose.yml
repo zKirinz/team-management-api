@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+    api:
+        container_name: api
+        image: node:14.17.0
+        depends_on:
+            - mongodb
+        command: >
+            sh -c "yarn &&
+                yarn start:local"
+        ports:
+            - 3000:3000
+        working_dir: /app
+        volumes:
+            - ./:/app
+
+    mongodb:
+        container_name: database
+        image: mongo
+        ports:
+            - 27018:27017
+        volumes:
+            - mongo:/data/db
+        restart: unless-stopped
+
+volumes:
+    mongo:

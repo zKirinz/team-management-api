@@ -1,9 +1,20 @@
-const app = require("./app");
+const fastify = require("fastify");
+const fp = require("fastify-plugin");
 
-app.listen(3000, function (error, address) {
-    if (error) {
-        console.log(error);
-        process.exit(1);
-    }
-    console.log(`server listening on ${address}`);
-});
+const server = fastify();
+
+server
+    .register(require("./helpers/swagger"))
+    .register(require("fastify-cors"), {
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+    })
+    .register(require("fastify-sensible"))
+    .register(fp(require("./helpers/database")["fastifyMongoose"]))
+    .register(fp(require("./helpers/bcrypt")["fastifyBcrypt"]))
+    .register(fp(require("./helpers/jwt")["fastifyJWT"]))
+    .register(fp(require("./helpers/service")))
+    .register(require("./controllers/user"), {prefix: `/api/${process.env.VERSION}/users`})
+    .register(require("./controllers/team"), {prefix: `/api/${process.env.VERSION}/teams`});
+
+module.exports = server;

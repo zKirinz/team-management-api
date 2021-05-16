@@ -1,12 +1,11 @@
 {
     "name": "team-management-api-fastify",
     "version": "1.0.0",
-    "description": "",
-    "main": "server.js",
+    "main": "app.js",
     "scripts": {
-        "start": "node server.js",
-        "start:local": "env-cmd -f .env.local nodemon server.js",
-        "start:dev": "env-cmd -f .env.development nodemon server.js",
+        "start": "node app.js",
+        "start:local": "env-cmd -f .env.local nodemon app.js",
+        "start:dev": "env-cmd -f .env.development nodemon app.js",
         "test": "env-cmd -f .env.test jest --config ./jest.config.js",
         "format": "prettier --config .prettierrc --write \"**/*.+(js|jsx|json|css|md)\"",
         "prepare": "husky install"

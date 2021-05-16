@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const app = require("../app");
+const app = require("../server");
 const supertest = require("supertest");
 const {getUserToken} = require("../helpers/jwt");
 
