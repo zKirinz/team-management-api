@@ -17,7 +17,7 @@ describe("Update Profile user /me", () => {
     const exec = async (token, name, description, avatarUrl) => {
         const api = await request();
         return api
-            .post("/api/users/me")
+            .post(`/api/${process.env.VERSION}/users/me`)
             .set({authorization: token})
             .send({name, description, avatarUrl});
     };

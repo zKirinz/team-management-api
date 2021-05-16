@@ -16,7 +16,7 @@ describe("Get Profile user /me", () => {
 
     const exec = async (token) => {
         const api = await request();
-        return api.get("/api/users/me").set({authorization: token});
+        return api.get(`/api/${process.env.VERSION}/users/me`).set({authorization: token});
     };
 
     it("should return 200 GET PROFILE USER succeed", async () => {

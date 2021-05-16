@@ -14,7 +14,7 @@ describe("Register user /register", () => {
 
     const exec = async (name, email, password) => {
         const api = await request();
-        return api.post("/api/users/register").send({name, email, password});
+        return api.post(`/api/${process.env.VERSION}/users/register`).send({name, email, password});
     };
 
     it("should return 201 REGISTER USER succeed", async () => {

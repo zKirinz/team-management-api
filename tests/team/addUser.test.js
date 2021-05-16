@@ -24,7 +24,10 @@ describe("Add a user to a team /addUser", () => {
 
     const exec = async (token, name, id) => {
         const api = await request();
-        return api.post("/api/teams/addUser").set({authorization: token}).send({name, id});
+        return api
+            .post(`/api/${process.env.VERSION}/teams/addUser`)
+            .set({authorization: token})
+            .send({name, id});
     };
 
     it("should return 200 ADD A USER succeed", async () => {

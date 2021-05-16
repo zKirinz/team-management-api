@@ -4,6 +4,7 @@ const MAX_TEAMS = 6;
 const MIN_TEAMS = 3;
 
 const create = {
+    tags: ["team"],
     headers: {
         type: "object",
         required: ["authorization"],
@@ -35,6 +36,7 @@ const create = {
 };
 
 const getAll = {
+    tags: ["team"],
     query: {
         type: "object",
         properties: {
@@ -69,6 +71,7 @@ const getAll = {
 };
 
 const get = {
+    tags: ["team"],
     query: {
         type: "object",
         properties: {
@@ -103,6 +106,7 @@ const get = {
 };
 
 const update = {
+    tags: ["team"],
     headers: {
         type: "object",
         required: ["authorization"],
@@ -141,6 +145,7 @@ const update = {
 };
 
 const remove = {
+    tags: ["team"],
     headers: {
         type: "object",
         required: ["authorization"],
@@ -169,6 +174,7 @@ const remove = {
 };
 
 const addUser = {
+    tags: ["team"],
     headers: {
         type: "object",
         required: ["authorization"],

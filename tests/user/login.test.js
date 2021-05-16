@@ -14,7 +14,7 @@ describe("Login user /login", () => {
 
     const exec = async (email, password) => {
         const api = await request();
-        return api.post("/api/users/login").send({email, password});
+        return api.post(`/api/${process.env.VERSION}/users/login`).send({email, password});
     };
 
     it("should return 200 LOGIN USER succeed", async () => {

@@ -19,7 +19,7 @@ describe("Change Password user /password", () => {
     const exec = async (token, password, newPassword) => {
         const api = await request();
         return api
-            .post("/api/users/password")
+            .post(`/api/${process.env.VERSION}/users/password`)
             .set({authorization: token})
             .send({password, newPassword});
     };

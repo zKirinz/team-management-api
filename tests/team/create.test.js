@@ -20,7 +20,10 @@ describe("Create a team /", () => {
 
     const exec = async (token, name, isPublished) => {
         const api = await request();
-        return api.post("/api/teams").set({authorization: token}).send({name, isPublished});
+        return api
+            .post(`/api/${process.env.VERSION}/teams`)
+            .set({authorization: token})
+            .send({name, isPublished});
     };
 
     it("should return 201 CREATE A TEAM succeed", async () => {

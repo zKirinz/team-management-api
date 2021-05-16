@@ -23,7 +23,10 @@ describe("Get teams /", () => {
         if (typeof offset === "number") queryParams.offset = offset;
 
         const api = await request();
-        return api.get("/api/teams").query(queryParams).set({authorization: token});
+        return api
+            .get(`/api/${process.env.VERSION}/teams`)
+            .query(queryParams)
+            .set({authorization: token});
     };
 
     it("should return 200 GET TEAMS succeed with no limit and no offset and no search", async () => {

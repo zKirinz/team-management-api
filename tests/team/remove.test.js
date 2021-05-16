@@ -17,7 +17,7 @@ describe("Remove a team /", () => {
 
     const exec = async (token, name) => {
         const api = await request();
-        return api.delete("/api/teams").set({authorization: token}).send({
+        return api.delete(`/api/${process.env.VERSION}/teams`).set({authorization: token}).send({
             name,
         });
     };

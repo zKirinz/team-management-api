@@ -17,7 +17,7 @@ describe("Update a team /", () => {
 
     const exec = async (token, name, description, avatarUrl, isPublished) => {
         const api = await request();
-        return api.put("/api/teams").set({authorization: token}).send({
+        return api.put(`/api/${process.env.VERSION}/teams`).set({authorization: token}).send({
             name,
             description,
             avatarUrl,

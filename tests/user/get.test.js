@@ -22,7 +22,10 @@ describe("Get users /", () => {
         if (typeof offset === "number") queryParams.offset = offset;
 
         const api = await request();
-        return api.get("/api/users").query(queryParams).set({authorization: token});
+        return api
+            .get(`/api/${process.env.VERSION}/users`)
+            .query(queryParams)
+            .set({authorization: token});
     };
 
     it("should return 200 GET USER succeed with no limit and no offset and no search", async () => {

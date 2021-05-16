@@ -4,6 +4,7 @@ const MAX_USERS = 20;
 const MIN_USERS = 3;
 
 const register = {
+    tags: ["user"],
     body: {
         type: "object",
         required: ["name", "email", "password"],
@@ -30,6 +31,7 @@ const register = {
 };
 
 const login = {
+    tags: ["user"],
     body: {
         type: "object",
         require: ["email", "password"],
@@ -45,6 +47,7 @@ const login = {
 };
 
 const getProfile = {
+    tags: ["user"],
     headers: {
         type: "object",
         required: ["authorization"],
@@ -61,6 +64,7 @@ const getProfile = {
 };
 
 const get = {
+    tags: ["user"],
     query: {
         type: "object",
         properties: {
@@ -95,6 +99,7 @@ const get = {
 };
 
 const updateProfile = {
+    tags: ["user"],
     headers: {
         type: "object",
         required: ["authorization"],
@@ -130,6 +135,7 @@ const updateProfile = {
 };
 
 const changePassword = {
+    tags: ["user"],
     headers: {
         type: "object",
         required: ["authorization"],
