@@ -1,6 +1,8 @@
 # Task Management API
 ## ✨ Introdution
 This is a simple API that I created to have fun with [Fastify](https://www.fastify.io/).
+## ✨ Document
+[Here](https://team-management-backend.herokuapp.com/api/v1.0/documentation) is a static document page created with [Swagger](https://swagger.io/).
 
 ## ✨ Project setup
 ### 📦 For container environment
