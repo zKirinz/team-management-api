@@ -3,7 +3,7 @@ version: "3.7"
 services:
     api:
         container_name: api
-        image: node:14.17.0
+        image: node:14.17-alpine
         depends_on:
             - mongodb
         command: >
