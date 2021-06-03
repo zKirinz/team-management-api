@@ -1,10 +1,20 @@
-# Task Management API
-## ✨ Introdution
-This is a simple API that I created to have fun with [Fastify](https://www.fastify.io/).
-## ✨ Document
+# ✨ Task Management API
+## What is Team Management API?
+This is API for team management with only 2 entity `User` and `Team`.
+## Technology
+- Backend
+  - Fastify - Server Core
+  - Mongoose + MongoDB - Database
+  - Jest + Supertest - E2E testing
+- Tool
+  - Swagger - Documentation
+  - VSCode Remote Container - Development environment 
+
+**Note**: I don't intend to create Frontend for this API. But maybe I will in the future. 
+##  Document
 [Here](https://team-management-backend.herokuapp.com/api/v1.0/documentation) is a static document page created with [Swagger](https://swagger.io/).
 
-## ✨ Project setup
+## Project setup
 ### 📦 For container environment
 - Firstly, you need to install [Docker](https://www.docker.com/) and then start it.
 
@@ -20,7 +30,7 @@ docker-compose up -d
 ```
 yarn start:local
 ```
-## ✨Some additional commands 
+## Some additional commands 
 - Format project
 ```
 yarn format
@@ -29,3 +39,8 @@ yarn format
 ```
 yarn test
 ```
+
+# License & copyright
+
+© Kirin Tran, FPT University TP.HCM
+Licensed under the [MIT LICENSE](LICENSE).
